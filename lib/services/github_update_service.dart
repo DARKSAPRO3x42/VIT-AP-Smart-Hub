@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -41,7 +42,7 @@ class GitHubUpdateService {
         }
       }
     } catch (e) {
-      print('Error checking for update: $e');
+      debugPrint('Error checking for update: $e');
     }
     return null;
   }
@@ -94,10 +95,10 @@ class GitHubUpdateService {
       // Open the downloaded APK to trigger the installer
       final result = await OpenFile.open(filePath);
       if (result.type != ResultType.done) {
-        print('Error open file: ${result.message}');
+        debugPrint('Error open file: ${result.message}');
       }
     } catch (e) {
-      print('Error downloading update: $e');
+      debugPrint('Error downloading update: $e');
       rethrow;
     }
   }
