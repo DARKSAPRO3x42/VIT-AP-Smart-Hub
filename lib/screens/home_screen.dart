@@ -7,6 +7,8 @@ import 'floor_map_screen.dart';
 import 'file_converter_screen.dart';
 import 'vtop_webview_screen.dart';
 import 'cgpa_calculator_screen.dart';
+import '../services/github_update_service.dart';
+import '../widgets/update_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +26,22 @@ class _HomeScreenState extends State<HomeScreen> {
     const AttendanceScreen(),
     const SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkForUpdates();
+    });
+  }
+
+  Future<void> _checkForUpdates() async {
+    final updateService = GitHubUpdateService();
+    final updateInfo = await updateService.checkForUpdate();
+    if (updateInfo != null && mounted) {
+      showUpdateDialog(context, updateInfo);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
